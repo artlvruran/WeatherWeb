@@ -54,7 +54,7 @@ class Place:
 
 class PlaceMaster(Place):
     @staticmethod
-    def get_coords(name: str) -> Place:
+    def get_place(name: str) -> Place:
         geocoder_req = f"https://geocode-maps.yandex.ru/1.x/?apikey={GEOCODER_API_KEY}&geocode={name}&format=json"
         response = requests.get(geocoder_req).json()
         pos = response['response']['GeoObjectCollection']['featureMember'][0]['GeoObject']['Point']['pos'].split()

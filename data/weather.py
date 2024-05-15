@@ -25,7 +25,7 @@ blueprint = flask.Blueprint(
 @blueprint.route("/weather/<city>")
 @login_required
 def get_weather(city):
-    place = PlaceMaster.get_coords(city)
+    place = PlaceMaster.get_place(city)
     pos = (place.lng, place.lat)
 
     forecast_hourly = WeatherMaster.get_forecast_hourly(pos)
@@ -74,10 +74,27 @@ def weather_cards():
 @login_required
 def download_card():
     id = request.args.get('id')
+    format = request.args.get('format')
     db_sess = db_session.create_session()
     card = db_sess.query(WeatherCard).filter(WeatherCard.id == id).first()
     data = Place(card.latitude, card.longitude).card()
-    with open('./static/tmp/temp.txt', mode='w') as file:
+    if format == 'txt':
+        with open('./static/tmp/temp.txt', mode='w') as file:
+            weather_dict = data['weather'].get_dict()
+            result = {
+                'place': data['name'],
+                'weather': weather_dict,
+                'forecast': data['forecast']
+            }
+            text = f"""Weather forecast for {data['name']} at {weather_dict['date']}
+Now there's {weather_dict['temperature']} ℃
+Forecast on today:\n"""
+            for elem in result['forecast']:
+                text += f"{elem['time']} : {elem['temp']}\n"
+            file.write(text)
+        return flask.send_file('./static/tmp/temp.txt', as_attachment=True, download_name=f"weather_{data['name']}.txt")
+
+    with open('./static/tmp/temp.json', mode='w') as file:
         weather_dict = data['weather'].get_dict()
         result = {
             'place': data['name'],
@@ -85,7 +102,7 @@ def download_card():
             'forecast': data['forecast']
         }
         file.write(json.dumps(result))
-    return flask.send_file('./static/tmp/temp.txt', as_attachment=True)
+    return flask.send_file('./static/tmp/temp.json', as_attachment=True, download_name=f"weather_{data['name']}.json")
 
 
 @blueprint.route('/weather/cards/add', methods=['POST'])

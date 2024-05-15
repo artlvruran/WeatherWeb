@@ -47,9 +47,16 @@
                     </div>
                     <div class="row">
                         <div class="col" style="text-align: center">
-                            <form id="download{{ card[1] }}" method="POST" action="/weather/cards/download?id={{ card[1] }}">
-                                <span class="material-symbols-outlined" onclick="download{{ card[1] }}.submit()" style="cursor: pointer">
-                                download
+                            <form id="download{{ card[1] }}txt" method="POST" action="/weather/cards/download?id={{ card[1] }}&format=txt">
+                                <span class="material-symbols-outlined" onclick="download{{ card[1] }}txt.submit()" style="cursor: pointer">
+                                description
+                                </span>
+                            </form>
+                        </div>
+                        <div class="col" style="text-align: center">
+                            <form id="download{{ card[1] }}json" method="POST" action="/weather/cards/download?id={{ card[1] }}&format=json">
+                                <span class="material-symbols-outlined" onclick="download{{ card[1] }}json.submit()" style="cursor: pointer">
+                                data_object
                                 </span>
                             </form>
                         </div>
