@@ -45,7 +45,8 @@ def get_weather(city):
               "feels_like": f'{celc_from_kelvin(weather_response["main"]["feels_like"])} °C',
               "pressure": f'{round(0.750064 * float(weather_response["main"]["pressure"]), 1)} Hg',
               "wind_speed": f'{weather_response["wind"]["speed"]} m/s',
-              'image': place.image}
+              'image': place.image
+              }
 
     return render_template('general.html', **params)
 
