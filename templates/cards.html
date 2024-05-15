@@ -19,11 +19,12 @@
             <div class="card h-100 rowelement">
                 <img class="card-img" src={{card[0].image}} alt="oops, something went wrong" style="-webkit-filter: blur(8px);
                                                                                                  filter: brightness(40%);
-                                                                                                 min-height:400px">
+                                                                                                 min-height:450px">
                 <div class="card-img-overlay">
                     <div class="row">
-                        <div class="col">
-                            <h2 class="card-title">
+                        <div class="col" style="height: 200px">
+                            <h2 class="card-title" style="height: 170px;
+                                                          overflow: auto;">
                                 {{ card[0].name }}
                             </h2>
                             <h3 class="card-text">

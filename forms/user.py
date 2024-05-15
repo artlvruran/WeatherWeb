@@ -8,6 +8,7 @@ class RegisterForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     password_again = PasswordField('Repeat password', validators=[DataRequired()])
     username = StringField('User name', validators=[DataRequired()])
+    fullname = StringField('Full name', validators=[DataRequired()])
     city = StringField('Your city', validators=[DataRequired()])
     about = TextAreaField("About")
     submit = SubmitField('Enter')

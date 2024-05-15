@@ -48,7 +48,7 @@ class WeatherMaster:
 
     @staticmethod
     def get_forecast_hourly(pos: tuple):
-        forecast_request = f'https://api.openweathermap.org/data/2.5/onecall?lat={pos[1]}&lon={pos[0]}&appid={WEATHER_API_KEY}'
+        forecast_request = f'https://api.openweathermap.org/data/2.5/onecall?lat={pos[0]}&lon={pos[1]}&appid={WEATHER_API_KEY}'
         forecast = requests.get(forecast_request).json()
 
         forecast_hourly = [{
@@ -63,7 +63,7 @@ class WeatherMaster:
 
     @staticmethod
     def get_forecast_daily(pos: tuple):
-        forecast_request = f'https://api.openweathermap.org/data/2.5/onecall?lat={pos[1]}&lon={pos[0]}&appid={WEATHER_API_KEY}'
+        forecast_request = f'https://api.openweathermap.org/data/2.5/onecall?lat={pos[0]}&lon={pos[1]}&appid={WEATHER_API_KEY}'
         forecast = requests.get(forecast_request).json()
 
         forecast_daily = [{

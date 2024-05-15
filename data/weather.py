@@ -30,7 +30,7 @@ def get_weather(city):
 
     forecast_hourly = WeatherMaster.get_forecast_hourly((pos[1], pos[0]))
 
-    forecast_daily = WeatherMaster.get_forecast_daily(pos)
+    forecast_daily = WeatherMaster.get_forecast_daily((pos[1], pos[0]))
 
     current_weather_request = f'https://api.openweathermap.org/data/2.5/weather?lat={pos[1]}&lon={pos[0]}&lang=en&appid={WEATHER_API_KEY}'
     weather_response = requests.get(current_weather_request).json()

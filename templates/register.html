@@ -43,6 +43,15 @@
                 {% endfor %}
             </p>
             <p>
+                {{ form.fullname.label }}<br>
+                {{ form.fullname(class="form-style") }}<br>
+                {% for error in form.fullname.errors %}
+                    <p class="alert alert-danger" role="alert">
+                        {{ error }}
+                    </p>
+                {% endfor %}
+            </p>
+            <p>
                 {{ form.city.label }}<br>
                 {{ form.city(class="form-style") }}<br>
                 {% for error in form.email.errors %}

@@ -61,7 +61,8 @@ def register():
             email=form.email.data,
             about=form.about.data,
             city=form.city.data,
-            avatar_image=sqlalchemy.null()
+            fullname=form.fullname.data,
+            avatar_image=sqlalchemy.null(),
         )
         user.set_password(form.password.data)
         db_sess.add(user)
