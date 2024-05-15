@@ -7,7 +7,7 @@ from flask import render_template, request, redirect, url_for
 from flask_login import LoginManager, login_user, login_required, current_user, logout_user
 from data import db_session
 from data.weather_cards import WeatherCard
-from src.place import Place
+from src.place import Place, PlaceMaster
 from data.users import User
 
 
@@ -87,6 +87,7 @@ def get_city(city):
     text = request.form['search']
     return redirect(f'/weather/{text}')
 
+
 @blueprint.route('/weather/cards')
 @login_required
 def weather_cards():
@@ -99,6 +100,7 @@ def weather_cards():
     }
 
     return render_template('cards.html', **params)
+
 
 @blueprint.route('/weather/cards/download', methods=['POST'])
 @login_required
@@ -116,3 +118,31 @@ def download_card():
         }
         file.write(json.dumps(result))
     return flask.send_file('./static/tmp/temp.txt', as_attachment=True)
+
+
+@blueprint.route('/weather/cards/add', methods=['POST'])
+@login_required
+def add_card():
+    db_sess = db_session.create_session()
+
+    text = request.form['search']
+    user = db_sess.query(User).filter(User.id == current_user.id).first()
+    place = PlaceMaster.get_place(text)
+    card = WeatherCard(user_id=user.id, latitude=place.lat, longitude=place.lng)
+
+    db_sess.add(card)
+    db_sess.commit()
+
+    return redirect('/weather/cards')
+
+
+@blueprint.route('/weather/cards/delete', methods=['POST'])
+@login_required
+def delete_card():
+    db_sess = db_session.create_session()
+    id = request.args.get('id')
+    card = db_sess.query(WeatherCard).filter(WeatherCard.id == id).first()
+    db_sess.delete(card)
+    db_sess.commit()
+
+    return redirect('/weather/cards')

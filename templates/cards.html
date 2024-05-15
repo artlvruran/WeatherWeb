@@ -1,7 +1,19 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="row row-cols-1 row-cols-md-3 g-4">
+    <div id="cover">
+      <form name="search_map" action="/weather/cards/add" method="post">
+        <div class="tb">
+          <div class="td"><input type="text" placeholder="Add card" required name="search"></div>
+          <div class="td" id="s-cover">
+            <button type="submit">
+              <div id="s-circle"></div>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
     {% for card in cards %}
         <div class="col">
             <div class="card h-100 rowelement">
@@ -34,11 +46,20 @@
                         </ul>
                     </div>
                     <div class="row">
-                        <form id="download{{ card[1] }}" method="POST" action="/weather/cards/download?id={{ card[1] }}">
-                            <span class="material-symbols-outlined" onclick="download{{ card[1] }}.submit()">
-                            download
-                            </span>
-                        </form>
+                        <div class="col" style="text-align: center">
+                            <form id="download{{ card[1] }}" method="POST" action="/weather/cards/download?id={{ card[1] }}">
+                                <span class="material-symbols-outlined" onclick="download{{ card[1] }}.submit()" style="cursor: pointer">
+                                download
+                                </span>
+                            </form>
+                        </div>
+                        <div class="col" style="text-align: center">
+                            <form id="delete{{ card[1] }}" method="POST" action="/weather/cards/delete?id={{ card[1] }}">
+                                <span class="material-symbols-outlined" onclick="delete{{ card[1] }}.submit()" style="cursor: pointer">
+                                delete
+                                </span>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>

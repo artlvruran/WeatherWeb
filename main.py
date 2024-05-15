@@ -15,16 +15,20 @@ import logging
 
 db_session.global_init("db/users.db")
 app = Flask(__name__)
+
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
-app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
+
+app.config['SECRET_KEY'] = 'secret_key'
 app.config['UPLOADED_PHOTOS_DEST'] = UPLOAD_FOLDER
+
 app.register_blueprint(weather.blueprint)
 app.register_blueprint(map_page.blueprint)
+
 images = UploadSet('photos', IMAGES)
 configure_uploads(app, images)
-logging.basicConfig(filename='example.log')
+logging.basicConfig(filename='history.log')
 
 
 @login_manager.user_loader

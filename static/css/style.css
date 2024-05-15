@@ -49,7 +49,6 @@ html {
   color: #00a388;
 }
 .menu li:not(:last-child) {
-  margin-right: 30px;
 }
 
 @-webkit-keyframes line {

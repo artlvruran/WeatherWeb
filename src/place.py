@@ -46,3 +46,12 @@ class Place:
             'forecast': self.forecast
         }
         return result
+
+
+class PlaceMaster(Place):
+    @staticmethod
+    def get_place(name: str) -> Place:
+        geocoder_req = f"https://geocode-maps.yandex.ru/1.x/?apikey={GEOCODER_API_KEY}&geocode={name}&format=json"
+        response = requests.get(geocoder_req).json()
+        pos = response['response']['GeoObjectCollection']['featureMember'][0]['GeoObject']['Point']['pos'].split()
+        return PlaceMaster(pos[1], pos[0])
