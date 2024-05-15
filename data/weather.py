@@ -28,7 +28,7 @@ def get_weather(city):
     place = PlaceMaster.get_place(city)
     pos = (place.lng, place.lat)
 
-    forecast_hourly = WeatherMaster.get_forecast_hourly(pos)
+    forecast_hourly = WeatherMaster.get_forecast_hourly((pos[1], pos[0]))
 
     forecast_daily = WeatherMaster.get_forecast_daily(pos)
 
