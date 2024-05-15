@@ -33,16 +33,20 @@ class Place:
     def __init__(self, lat: float, lng: float):
         self.lat = lat
         self.lng = lng
+
         self.properties = self.get_properties(lat, lng)
+        metadata = self.properties["response"]["GeoObjectCollection"]["featureMember"][0]["GeoObject"]
+
         self.weather = WeatherMaster.get_today((lat, lng))
-        self.forecast = WeatherMaster.get_forecast((lat, lng))
+        self.forecast = WeatherMaster.get_forecast_hourly((lat, lng))
+        self.image = self.get_image(metadata["name"])
 
     def card(self):
         metadata = self.properties["response"]["GeoObjectCollection"]["featureMember"][0]["GeoObject"]
         result = {
             'name': metadata["name"],
             'weather': self.weather,
-            'image': self.get_image(metadata["name"]),
+            'image': self.image,
             'forecast': self.forecast
         }
         return result
@@ -50,8 +54,8 @@ class Place:
 
 class PlaceMaster(Place):
     @staticmethod
-    def get_place(name: str) -> Place:
+    def get_coords(name: str) -> Place:
         geocoder_req = f"https://geocode-maps.yandex.ru/1.x/?apikey={GEOCODER_API_KEY}&geocode={name}&format=json"
         response = requests.get(geocoder_req).json()
         pos = response['response']['GeoObjectCollection']['featureMember'][0]['GeoObject']['Point']['pos'].split()
-        return PlaceMaster(pos[1], pos[0])
+        return Place(pos[1], pos[0])

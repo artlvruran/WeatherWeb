@@ -47,7 +47,7 @@ class WeatherMaster:
         return weather
 
     @staticmethod
-    def get_forecast(pos: tuple):
+    def get_forecast_hourly(pos: tuple):
         forecast_request = f'https://api.openweathermap.org/data/2.5/onecall?lat={pos[1]}&lon={pos[0]}&appid={WEATHER_API_KEY}'
         forecast = requests.get(forecast_request).json()
 
@@ -60,3 +60,19 @@ class WeatherMaster:
             for i in range(len(forecast["hourly"]))]
 
         return forecast_hourly
+
+    @staticmethod
+    def get_forecast_daily(pos: tuple):
+        forecast_request = f'https://api.openweathermap.org/data/2.5/onecall?lat={pos[1]}&lon={pos[0]}&appid={WEATHER_API_KEY}'
+        forecast = requests.get(forecast_request).json()
+
+        forecast_daily = [{
+            "time": datetime.datetime.utcfromtimestamp(
+                int(forecast["daily"][i]["dt"]) + int(forecast["timezone_offset"])).strftime('%d.%m'),
+            "temp_day": f'{WeatherMaster.celc_from_kelvin(forecast["daily"][i]["temp"]["day"])} °C',
+            "temp_night": f'{WeatherMaster.celc_from_kelvin(forecast["daily"][i]["temp"]["night"])} °C',
+            "icon": f'https://openweathermap.org/img/wn/{forecast["daily"][i]["weather"][0]["icon"]}.png'
+        }
+            for i in range(len(forecast["daily"]))]
+
+        return forecast_daily
