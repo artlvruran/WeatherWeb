@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="general">
+        <div class="mx-auto">
+        <div style="background-image:url({{image}});
+                    -webkit-filter: blur(8px);
+                    position: absolute;
+                        background-position: center center;
+                        background-repeat: no-repeat;
+                        background-attachment: fixed;
+                        align-self: center;
+                        height: 520px;
+                        width: 68%;
+                        max-width: 68%;
+                        background-size: cover;
+                    ">
+        </div></div>
+        <div style="position: relative; z-index: 2; color:white">
+            <div>
+                <div id="cover">
+                  <form name="search_city" action="/weather/{{city}}" method="post">
+                    <div class="tb">
+                      <div class="td"><input type="text" placeholder="Search" required name="search"></div>
+                      <div class="td" id="s-cover">
+                        <button type="submit">
+                          <div id="s-circle"></div>
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+            </div>
+            <h1 align="center">{{ city }}</h1>
+            <h5 align="center">{{main}}</h5>
+            <center>
+                <img src={{icon}} alt="oops, something went wrong" height="60px" width="60px">
+            </center>
+            <div class="temperature" align="center">
+                {{ temperature }}
+            </div>
+            <h3 align="center">highest: {{max}}, lowest: {{min}}</h3>
+        </div>
+    </div>
+    <div class="shadow p-30 mb-5 bg-body rounded">
+            <ul class="hourly_forecast">
+                {% for elem in forecast_hourly %}
+                        <li>
+                            {{elem["time"]}}<br>
+                            <img src={{elem["icon"]}} alt="oops, something went wrong" width="25px" height="25px"> <br>
+                            {{elem["temp"]}}
+                        </li>
+                {% endfor %}
+            </ul>
+    </div>
+    <div class="shadow p-30 mb-5 bg-body rounded">
+        <ul class="hourly_forecast">
+            {% for elem in forecast_daily %}
+                    <li>
+                        {{elem["time"]}}<br>
+                       <img src={{elem["icon"]}} alt="oops, something went wrong" width="25px" height="25px"> <br>
+                        day {{elem["temp_day"]}}<br>
+                        night {{elem["temp_night"]}}
+                    </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">feels like <br> {{feels_like}}</li>
+        <li class="list-group-item">pressure <br> {{pressure}}</li>
+        <li class="list-group-item">wind <br> {{wind_speed}}</li>
+    </ul>
+
+{% endblock %}

@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div id="cover">
+      <form name="search_map" action="/weather/cards/add" method="post">
+        <div class="tb">
+          <div class="td"><input type="text" placeholder="Add card" required name="search"></div>
+          <div class="td" id="s-cover">
+            <button type="submit">
+              <div id="s-circle"></div>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+    {% for card in cards %}
+        <div class="col">
+            <div class="card h-100 rowelement">
+                <img class="card-img" src={{card[0].image}} alt="oops, something went wrong" style="-webkit-filter: blur(8px);
+                                                                                                 filter: brightness(40%);
+                                                                                                 min-height:450px">
+                <div class="card-img-overlay">
+                    <div class="row">
+                        <div class="col" style="height: 200px">
+                            <h2 class="card-title" style="height: 170px;
+                                                          overflow: auto;">
+                                {{ card[0].name }}
+                            </h2>
+                            <h3 class="card-text">
+                                {{ card[0].description }}
+                            </h3>
+                        </div>
+                        <h1 class="col">
+                            {{ card[0].weather.temperature }} ℃
+                        </h1>
+                    </div>
+                    <div class="row">
+                        <ul class="card_forecast">
+                            {% for elem in card[0].forecast %}
+                                <li>
+                                    {{elem["time"]}}<br>
+                                    <img src={{elem["icon"]}} alt="oops, something went wrong" width="25px" height="25px"> <br>
+                                    {{elem["temp"]}}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="row">
+                        <div class="col" style="text-align: center">
+                            <form id="download{{ card[1] }}txt" method="POST" action="/weather/cards/download?id={{ card[1] }}&format=txt">
+                                <span class="material-symbols-outlined" onclick="download{{ card[1] }}txt.submit()" style="cursor: pointer">
+                                description
+                                </span>
+                            </form>
+                        </div>
+                        <div class="col" style="text-align: center">
+                            <form id="download{{ card[1] }}json" method="POST" action="/weather/cards/download?id={{ card[1] }}&format=json">
+                                <span class="material-symbols-outlined" onclick="download{{ card[1] }}json.submit()" style="cursor: pointer">
+                                data_object
+                                </span>
+                            </form>
+                        </div>
+                        <div class="col" style="text-align: center">
+                            <form id="delete{{ card[1] }}" method="POST" action="/weather/cards/delete?id={{ card[1] }}">
+                                <span class="material-symbols-outlined" onclick="delete{{ card[1] }}.submit()" style="cursor: pointer">
+                                delete
+                                </span>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}
